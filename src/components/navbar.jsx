@@ -8,15 +8,15 @@ export default function Navbar() {
     const navlinks = [
         {
             href: "#creations",
-            text: "Creations",
+            text: "QS Services",
         },
         {
             href: "#about",
-            text: "About",
+            text: "IT Services",
         },
         {
             href: "#testimonials",
-            text: "Testimonials",
+            text: "About",
         },
         {
             href: "#contact",
