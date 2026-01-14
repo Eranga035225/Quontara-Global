@@ -1,12 +1,16 @@
 import SectionTitle from "../components/section-title";
 import { ArrowUpRight, SendIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import JobCategorySelect from "../components/JobCategorySelect";
 
-export default function GetInTouch() {
+export default function JobPostSection() {
+  const [category, setCategory] = useState("");
+
   return (
     <section className="flex flex-col items-center -mt-20" id="contact">
       <SectionTitle
-        title="Get in touch"
+        title="Post Your Job"
         description="A visual collection of our most recent works - each piece crafted with intention, emotion, and style."
       />
       <form
@@ -41,6 +45,31 @@ export default function GetInTouch() {
             placeholder="Enter your email"
             className="w-full mt-2 p-3 outline-none border border-slate-700 rounded-lg focus-within:ring-1 transition focus:ring-indigo-600"
           />
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 150, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
+        >
+          <label className="font-medium text-slate-200">Whatsapp Number</label>
+          <input
+            name="whatsapp"
+            type="text"
+            placeholder="Enter your Whatsapp Contacts"
+            className="w-full mt-2 p-3 outline-none border border-slate-700 rounded-lg focus-within:ring-1 transition focus:ring-indigo-600"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 150, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 300, damping: 70, mass: 1 }}
+        >
+          <label className="font-medium text-slate-200">Job Category</label>
+          <JobCategorySelect value={category} onChange={setCategory} />
         </motion.div>
 
         <motion.div
