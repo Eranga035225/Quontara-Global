@@ -4,8 +4,8 @@ import OurLatestCreation from "../sections/our-latest-creation";
 import AboutOurApps from "../sections/about-our-apps";
 import OurTestimonials from "../sections/our-testimonials";
 import TrustedCompanies from "../sections/trusted-companies";
-import GetInTouch from "../sections/get-in-touch";
 import SubscribeNewsletter from "../sections/subscribe-newsletter";
+import JobPostSection from "../sections/job-post-section";
 
 const QsHome = () => {
   return (
@@ -16,7 +16,7 @@ const QsHome = () => {
         <AboutOurApps />
         <OurTestimonials />
         <TrustedCompanies />
-        <GetInTouch />
+        <JobPostSection />
         <SubscribeNewsletter />
       </main>
     </>
