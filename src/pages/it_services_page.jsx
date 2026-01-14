@@ -1,13 +1,13 @@
-import GetInTouch from "./sections/get-in-touch";
-import OurTestimonials from "./sections/our-testimonials";
-import SubscribeNewsletter from "./sections/subscribe-newsletter";
-import TrustedCompanies from "./sections/trusted-companies";
-import Footer from "./components/footer";
-import LenisScroll from "./components/lenis-scroll";
-import Navbar from "./components/navbar";
-import AboutOurApps from "./sections/about-our-apps";
+import GetInTouch from "./sections2/get-in-touch";
+import OurTestimonials from "./sections2/our-testimonials";
+import SubscribeNewsletter from "./sections2/subscribe-newsletter";
+import TrustedCompanies from "./sections2/trusted-companies";
+import Footer from "./components2/footer";
+import LenisScroll from "./components2/lenis-scroll";
+import Navbar from "./components2/navbar";
+import AboutOurApps from "./sections2/about-our-apps";
 import HeroSection from "./sections/hero-section";
-import OurLatestCreation from "./sections/our-latest-creation";
+import OurLatestCreation from "./sections2/our-latest-creation";
 
 
 export default function ITServicesPage(){
