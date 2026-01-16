@@ -28,7 +28,7 @@ export default function AboutOurApps() {
     },
   ];
   return (
-    <section className="flex flex-col items-center" id="about">
+    <section className="flex flex-col items-center pt-30" id="about">
       <SectionTitle
         title="About our apps"
         description="A visual collection of our most recent works - each piece crafted with intention, emotion, and style."

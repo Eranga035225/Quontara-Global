@@ -6,33 +6,26 @@ import LenisScroll from "../components2/lenis-scroll";
 import AboutOurApps from "../sections2/about-our-apps";
 import HeroSection from "../sections2/hero-section";
 import OurLatestCreation from "../sections2/our-latest-creation";
+import OurTeam from "../sections2/our-team";
+import ProjectsSection from "../sections2/ProjectsSection";
 
+export default function ITServicesPage() {
+  return (
+    <>
+      <LenisScroll />
 
+      <main className="px-6 md:px-16 lg:px-24 xl:px-32">
+        <HeroSection />
 
-export default function ITServicesPage(){
+        {/*<OurLatestCreation /> */}
+        <AboutOurApps />
+        <OurTeam />
+        <ProjectsSection />
+        <OurTestimonials />
+        {/*<TrustedCompanies /> */}
 
-   return (
-          <>
-              <LenisScroll />
-             
-              <main className="px-6 md:px-16 lg:px-24 xl:px-32">
-                  <HeroSection />
-                  <OurLatestCreation />
-                  <AboutOurApps />
-                  <OurTestimonials />
-                  <TrustedCompanies />
-                  <GetInTouch />
-                  
-              </main>
-              
-          </>
-      );
-
-
-
-
-
-
-
-
+        <GetInTouch />
+      </main>
+    </>
+  );
 }

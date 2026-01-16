@@ -94,7 +94,6 @@ export default function HeroSection() {
           Book a demo
         </button>
       </motion.div>
-      <TiltedImage />
     </section>
   );
 }

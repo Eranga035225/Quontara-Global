@@ -64,7 +64,7 @@ export default function HeroSection() {
         viewport={{ once: true }}
         transition={{ type: "spring", stiffness: 240, damping: 70, mass: 1 }}
       >
-        Reliable IT solutions  for your business success
+        Reliable IT solutions for your business success
       </motion.h1>
 
       <motion.p
@@ -80,7 +80,9 @@ export default function HeroSection() {
           mass: 1,
         }}
       >
-        We deliver custom software, web systems, mobile apps, graphic designs, UI/UX designs, AI/ML Projects, All kind of IT services , solutions for your IT assignments, 
+        We deliver custom software, web systems, mobile apps, graphic designs,
+        UI/UX designs, AI/ML Projects, All kind of IT services , solutions for
+        your IT assignments,
       </motion.p>
 
       <motion.div
@@ -99,7 +101,7 @@ export default function HeroSection() {
         </button>
       </motion.div>
 
-      <TiltedImage />
+      {/* <TiltedImage />*/}
     </section>
   );
 }
