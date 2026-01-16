@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MenuIcon, XIcon } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,7 +9,7 @@ export default function Navbar() {
     { to: "/", text: "QS Services" },
     //{ to: "/creations", text: "Creations" },
     { to: "/itservices", text: "IT Services" },
-    { to: "/#about", text: "About" },
+    { to: "/about", text: "About" },
     // { to: "/testimonials", text: "Testimonials" },
     { to: "/contact", text: "Contact" },
   ];
@@ -35,13 +35,22 @@ export default function Navbar() {
 
         <div className="hidden lg:flex items-center gap-8 transition duration-500">
           {navlinks.map((link) => (
-            <Link
+            <NavLink
               key={link.to}
               to={link.to}
-              className="hover:text-slate-300 transition"
+              className={({ isActive }) =>
+                `transition ${
+                  isActive
+                    ? "text-indigo-500 font-medium relative \
+     after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full \
+     after:bg-indigo-500 after:origin-left after:scale-x-100 \
+     after:transition-transform after:duration-500 after:ease-out"
+                    : "hover:text-slate-300 relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-indigo-500 after:origin-left after:scale-x-0 after:transition-transform after:duration-500 after:ease-out"
+                }`
+              }
             >
               {link.text}
-            </Link>
+            </NavLink>
           ))}
         </div>
 
@@ -66,10 +75,18 @@ export default function Navbar() {
         }`}
       >
         {navlinks.map((link) => (
-          <Link key={link.to} to={link.to} onClick={() => setIsMenuOpen(false)}>
+          <NavLink
+            key={link.to}
+            to={link.to}
+            onClick={() => setIsMenuOpen(false)}
+            className={({ isActive }) =>
+              isActive ? "text-indigo-500 font-medium" : ""
+            }
+          >
             {link.text}
-          </Link>
+          </NavLink>
         ))}
+
         <button
           onClick={() => setIsMenuOpen(false)}
           className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-slate-100 hover:bg-slate-200 transition text-black rounded-md flex"
