@@ -7,6 +7,7 @@ import TrustedCompanies from "../sections/trusted-companies";
 import SubscribeNewsletter from "../sections/subscribe-newsletter";
 import JobPostSection from "../sections/job-post-section";
 import ProjectsSection from "../sections/ProjectsSection";
+import OurTeam from "../sections/our-team";
 
 const QsHome = () => {
   return (
@@ -15,9 +16,10 @@ const QsHome = () => {
         <HeroSection />
         {/* <OurLatestCreation /> */}
         <AboutOurApps />
+        <OurTeam />
         <ProjectsSection />
         <OurTestimonials />
-        <TrustedCompanies />
+        {/* <TrustedCompanies />*/}
         <JobPostSection />
         <SubscribeNewsletter />
       </main>
