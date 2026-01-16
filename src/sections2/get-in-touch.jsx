@@ -147,7 +147,7 @@ export default function GetInTouch() {
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 280, damping: 70, mass: 1 }}
         >
-          Submit request
+          Submit Job
           <ArrowUpRight className="size-4.5" />
         </motion.button>
       </form>

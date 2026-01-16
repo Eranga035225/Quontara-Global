@@ -1,8 +1,7 @@
 import GetInTouch from "../sections2/get-in-touch";
 import OurTestimonials from "../sections2/our-testimonials";
-import SubscribeNewsletter from "../sections2/subscribe-newsletter";
 import TrustedCompanies from "../sections2/trusted-companies";
-import Footer from "../components2/footer";
+
 import LenisScroll from "../components2/lenis-scroll";
 import AboutOurApps from "../sections2/about-our-apps";
 import HeroSection from "../sections2/hero-section";
@@ -23,7 +22,7 @@ export default function ITServicesPage(){
                   <OurTestimonials />
                   <TrustedCompanies />
                   <GetInTouch />
-                  <SubscribeNewsletter />
+                  
               </main>
               
           </>
