@@ -7,6 +7,7 @@ import ContactUs from "./pages/ContactUs";
 import ITServicesPage from "./pages/it_services_page";
 import AboutUs from "./pages/AboutUs";
 import { Toaster } from "react-hot-toast";
+import LoginPage from "./pages/admin/LoginPage";
 
 export default function Page() {
   return (
@@ -19,6 +20,7 @@ export default function Page() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/itservices" element={<ITServicesPage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/admin/login" element={<LoginPage />} />
       </Routes>
       <Footer />
     </>
