@@ -6,11 +6,13 @@ import QsHome from "./pages/QsHome";
 import ContactUs from "./pages/ContactUs";
 import ITServicesPage from "./pages/it_services_page";
 import AboutUs from "./pages/AboutUs";
+import { Toaster } from "react-hot-toast";
 
 export default function Page() {
   return (
     <>
       <LenisScroll />
+      <Toaster position="top-right" />
       <Navbar />
       <Routes>
         <Route path="/" element={<QsHome />} />

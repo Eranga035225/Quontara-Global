@@ -21,8 +21,8 @@ export default function JobPostSection() {
       name,
       email,
       whatsappNumber: whatsapp,
-      jobCategory: category,
-      message: message,
+      itSolutionType: category,
+      jobDescription: message,
     };
 
     console.log("Job Post Payload:", payload);
@@ -30,7 +30,7 @@ export default function JobPostSection() {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/api/qs-jobs",
+        import.meta.env.VITE_BACKEND_URL + "/api/it-jobs",
         {
           ...payload,
         },

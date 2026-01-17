@@ -8,6 +8,7 @@ import HeroSection from "../sections2/hero-section";
 import OurLatestCreation from "../sections2/our-latest-creation";
 import OurTeam from "../sections2/our-team";
 import ProjectsSection from "../sections2/ProjectsSection";
+import JobPostSection from "../sections2/job-post-section";
 
 export default function ITServicesPage() {
   return (
@@ -23,8 +24,7 @@ export default function ITServicesPage() {
         <ProjectsSection />
         <OurTestimonials />
         {/*<TrustedCompanies /> */}
-
-        <GetInTouch />
+        <JobPostSection />
       </main>
     </>
   );
