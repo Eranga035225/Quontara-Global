@@ -1,0 +1,417 @@
+// src/pages/admin/AdminQSJobs.jsx
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { sampleProducts } from "../../assets/sampleData";
+
+function Badge({ status }) {
+  const s = (status || "pending").toLowerCase();
+  const map = {
+    pending: "bg-yellow-50 text-yellow-700 border-yellow-200",
+    approved: "bg-green-50 text-green-700 border-green-200",
+    rejected: "bg-red-50 text-red-700 border-red-200",
+  };
+  return (
+    <span
+      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
+        map[s] || "bg-gray-50 text-gray-700 border-gray-200"
+      }`}
+    >
+      {s}
+    </span>
+  );
+}
+
+function truncate(str, n = 60) {
+  if (!str) return "";
+  return str.length > n ? str.slice(0, n) + "…" : str;
+}
+
+export default function AdminQSJobsPage() {
+  const [qsjobs, setQsJobs] = useState(sampleProducts);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteJobId, setDeleteJobId] = useState(null);
+
+  const [showView, setShowView] = useState(false);
+  const [viewItem, setViewItem] = useState(null);
+
+  const navigate = useNavigate();
+
+  const backendBase = useMemo(() => {
+    // ensures correct slash handling
+    const base = import.meta.env.VITE_BACKEND_URL || "";
+    return base.endsWith("/") ? base.slice(0, -1) : base;
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) return;
+
+    axios
+      .get(`${backendBase}/api/qs-jobs`)
+      .then((res) => {
+        setQsJobs(Array.isArray(res.data) ? res.data : []);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        toast.error("Error fetching jobs");
+        setQsJobs([]);
+        setIsLoading(false);
+      });
+  }, [isLoading, backendBase]);
+
+  function openDeleteModal(jobId) {
+    setDeleteJobId(jobId);
+    setShowDeleteConfirm(true);
+  }
+
+  function closeDeleteModal() {
+    setShowDeleteConfirm(false);
+    setDeleteJobId(null);
+  }
+
+  function openViewModal(item) {
+    setViewItem(item);
+    setShowView(true);
+  }
+
+  function closeViewModal() {
+    setShowView(false);
+    setViewItem(null);
+  }
+
+  function deleteProduct(jobId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login first");
+      return;
+    }
+
+    axios
+      .delete(`${backendBase}/api/qs-jobs/${jobId}`, {
+        headers: { Authorization: "Bearer " + token },
+      })
+      .then(() => {
+        toast.success("Deleted successfully");
+        closeDeleteModal();
+        setIsLoading(true);
+      })
+      .catch((e) => {
+        toast.error(e?.response?.data?.message || "Something went wrong");
+      });
+  }
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gray-100 rounded-xl border border-gray-200">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-200 bg-white rounded-t-xl">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">QS Jobs</h1>
+          <p className="text-sm text-gray-600 mt-1">
+            View, edit, and manage submitted jobs.
+          </p>
+        </div>
+
+        <Link
+          to="/admin/add-product"
+          className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
+        >
+          <span className="text-lg leading-none">+</span>
+          <span>Add</span>
+        </Link>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
+        {isLoading ? (
+          <div className="w-full h-[40vh] flex justify-center items-center">
+            <div className="w-[70px] h-[70px] border-[5px] border-gray-300 border-t-gray-900 rounded-full animate-spin" />
+          </div>
+        ) : (
+          <>
+            {/* ✅ Desktop/Table (md+) */}
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200">
+              <div className="overflow-x-auto">
+                <table className="min-w-[1100px] w-full text-sm">
+                  <thead>
+                    <tr className="bg-gray-900 text-white">
+                      <th className="py-3 px-4 text-left font-semibold w-[220px]">
+                        Job ID
+                      </th>
+                      <th className="py-3 px-4 text-left font-semibold w-[180px]">
+                        Name
+                      </th>
+                      <th className="py-3 px-4 text-left font-semibold w-[240px]">
+                        Email
+                      </th>
+                      <th className="py-3 px-4 text-left font-semibold w-[180px]">
+                        Whatsapp
+                      </th>
+                      <th className="py-3 px-4 text-left font-semibold w-[220px]">
+                        Category
+                      </th>
+                      <th className="py-3 px-4 text-left font-semibold">
+                        Description
+                      </th>
+                      <th className="py-3 px-4 text-center font-semibold w-[160px]">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {qsjobs.map((item) => (
+                      <tr
+                        key={item._id}
+                        className="border-b border-gray-200 hover:bg-gray-50 transition"
+                      >
+                        <td className="py-3 px-4 text-gray-700 font-mono">
+                          {item._id}
+                        </td>
+
+                        <td className="py-3 px-4 text-gray-900 font-medium">
+                          {item.name}
+                        </td>
+
+                        <td className="py-3 px-4 text-gray-700">
+                          {item.email}
+                        </td>
+
+                        <td className="py-3 px-4 text-gray-900 font-semibold">
+                          {item.whatsappNumber}
+                        </td>
+
+                        <td className="py-3 px-4 text-gray-700">
+                          {item.jobCategory}
+                        </td>
+
+                        <td className="py-3 px-4 text-gray-700">
+                          <div className="flex items-center gap-3">
+                            <span className="block max-w-[420px] truncate">
+                              {item.message}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => openViewModal(item)}
+                              className="inline-flex items-center gap-2 text-gray-900 hover:underline"
+                              title="View full description"
+                            >
+                              <FaEye />
+                              <span className="text-xs">View</span>
+                            </button>
+                          </div>
+                        </td>
+
+                        <td className="py-3 px-4">
+                          <div className="flex justify-center items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => openDeleteModal(item._id)}
+                              className="p-2 rounded-full bg-red-50 hover:bg-red-100 transition"
+                              title="Delete"
+                            >
+                              <FaTrash className="text-red-600 text-[18px]" />
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                navigate("/admin/edit-qsjob", { state: item })
+                              }
+                              className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
+                              title="Edit"
+                            >
+                              <FaEdit className="text-gray-900 text-[18px]" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {qsjobs.length === 0 && (
+                      <tr>
+                        <td
+                          colSpan={7}
+                          className="py-12 text-center text-gray-600"
+                        >
+                          No jobs found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* ✅ Mobile/Card list (sm and below) */}
+            <div className="md:hidden space-y-4">
+              {qsjobs.map((item) => (
+                <div
+                  key={item._id}
+                  className="bg-white rounded-xl border border-gray-200 shadow-sm p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-xs text-gray-500">Job ID</p>
+                      <p className="text-sm font-mono text-gray-800 break-all">
+                        {item._id}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => openDeleteModal(item._id)}
+                        className="p-2 rounded-full bg-red-50 hover:bg-red-100 transition"
+                        title="Delete"
+                      >
+                        <FaTrash className="text-red-600 text-[18px]" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate("/admin/edit-qsjob", { state: item })
+                        }
+                        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
+                        title="Edit"
+                      >
+                        <FaEdit className="text-gray-900 text-[18px]" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 grid grid-cols-1 gap-3">
+                    <div>
+                      <p className="text-xs text-gray-500">Name</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {item.name}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-gray-500">Email</p>
+                      <p className="text-sm text-gray-800 break-all">
+                        {item.email}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-gray-500">Whatsapp</p>
+                      <p className="text-sm text-gray-900 font-semibold">
+                        {item.whatsappNumber}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-gray-500">Category</p>
+                      <p className="text-sm text-gray-800">
+                        {item.jobCategory}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-gray-500">Description</p>
+                      <p className="text-sm text-gray-800">
+                        {truncate(item.message, 120)}
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={() => openViewModal(item)}
+                        className="mt-2 inline-flex items-center gap-2 text-gray-900 font-semibold hover:underline"
+                      >
+                        <FaEye />
+                        View full
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {qsjobs.length === 0 && (
+                <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-600">
+                  No jobs found.
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* View Modal */}
+      {showView && viewItem && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          onClick={closeViewModal}
+        >
+          <div
+            className="bg-white rounded-lg shadow-lg w-[92vw] max-w-[650px] p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Job Description
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  {viewItem.name} • {viewItem.jobCategory}
+                </p>
+              </div>
+              <button
+                onClick={closeViewModal}
+                className="px-3 py-1.5 rounded-md border text-gray-700 hover:bg-gray-100 transition"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
+                {viewItem.message}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirm Modal */}
+      {showDeleteConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          onClick={closeDeleteModal}
+        >
+          <div
+            className="bg-white rounded-lg shadow-lg w-[320px] p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">
+              Confirm Delete
+            </h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Are you sure you want to delete this job?
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={closeDeleteModal}
+                className="px-4 py-2 rounded-md border text-gray-700 hover:bg-gray-100 transition"
+              >
+                No
+              </button>
+
+              <button
+                onClick={() => deleteProduct(deleteJobId)}
+                className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
