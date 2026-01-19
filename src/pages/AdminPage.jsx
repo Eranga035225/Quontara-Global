@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Loading from "../components/loading";
 import AdminQSJobsPage from "./admin/AdminQSJobs";
+import AdminITJobsPage from "./admin/AdminITJobs";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -53,7 +54,7 @@ export default function AdminPage() {
           QS Jobs
         </Link>
 
-        <Link className={getClass("users")} to="/admin/it-jobs">
+        <Link className={getClass("it-jobs")} to="/admin/it-jobs">
           IT Jobs
         </Link>
 
@@ -117,15 +118,7 @@ export default function AdminPage() {
           <Route path="/qs-jobs" element={<AdminQSJobsPage />} />
 
           {/* Placeholder routes */}
-          <Route
-            path="/it-jobs"
-            element={
-              <div className="p-6 bg-white rounded-xl shadow border">
-                <h2 className="text-xl font-bold text-gray-900">IT Jobs</h2>
-                <p className="text-gray-600 mt-2">Coming soon...</p>
-              </div>
-            }
-          />
+          <Route path="/it-jobs" element={<AdminITJobsPage />} />
           <Route
             path="/reviews"
             element={

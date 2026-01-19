@@ -1,10 +1,10 @@
-// src/pages/admin/AdminQSJobs.jsx
+// src/pages/admin/AdminITJobs.jsx
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { sampleJobsQS } from "../../assets/sampleData";
+import { sampleJobsIT } from "../../assets/sampleData";
 
 function Badge({ status }) {
   const s = (status || "pending").toLowerCase();
@@ -29,8 +29,8 @@ function truncate(str, n = 60) {
   return str.length > n ? str.slice(0, n) + "…" : str;
 }
 
-export default function AdminQSJobsPage() {
-  const [qsjobs, setQsJobs] = useState(sampleJobsQS);
+export default function AdminITJobsPage() {
+  const [itjobs, setItJobs] = useState(sampleJobsIT);
   const [isLoading, setIsLoading] = useState(true);
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -51,14 +51,14 @@ export default function AdminQSJobsPage() {
     if (!isLoading) return;
 
     axios
-      .get(`${backendBase}/api/qs-jobs`)
+      .get(`${backendBase}/api/it-jobs`)
       .then((res) => {
-        setQsJobs(Array.isArray(res.data) ? res.data : []);
+        setItJobs(Array.isArray(res.data) ? res.data : []);
         setIsLoading(false);
       })
       .catch(() => {
         toast.error("Error fetching jobs");
-        setQsJobs([]);
+        setItJobs([]);
         setIsLoading(false);
       });
   }, [isLoading, backendBase]);
@@ -91,7 +91,7 @@ export default function AdminQSJobsPage() {
     }
 
     axios
-      .delete(`${backendBase}/api/qs-jobs/${jobId}`, {
+      .delete(`${backendBase}/api/it-jobs/${jobId}`, {
         headers: { Authorization: "Bearer " + token },
       })
       .then(() => {
@@ -109,7 +109,7 @@ export default function AdminQSJobsPage() {
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-200 bg-white rounded-t-xl">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">QS Jobs</h1>
+          <h1 className="text-2xl font-bold text-gray-900">IT Jobs</h1>
           <p className="text-sm text-gray-600 mt-1">
             View, edit, and manage submitted jobs.
           </p>
@@ -163,7 +163,7 @@ export default function AdminQSJobsPage() {
                   </thead>
 
                   <tbody>
-                    {qsjobs.map((item) => (
+                    {itjobs.map((item) => (
                       <tr
                         key={item._id}
                         className="border-b border-gray-200 hover:bg-gray-50 transition"
@@ -185,13 +185,13 @@ export default function AdminQSJobsPage() {
                         </td>
 
                         <td className="py-3 px-4 text-gray-700">
-                          {item.jobCategory}
+                          {item.itSolutionType}
                         </td>
 
                         <td className="py-3 px-4 text-gray-700">
                           <div className="flex items-center gap-3">
                             <span className="block max-w-[420px] truncate">
-                              {item.message}
+                              {item.jobDescription}
                             </span>
                             <button
                               type="button"
@@ -219,7 +219,7 @@ export default function AdminQSJobsPage() {
                             <button
                               type="button"
                               onClick={() =>
-                                navigate("/admin/edit-qsjob", { state: item })
+                                navigate("/admin/edit-itjob", { state: item })
                               }
                               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
                               title="Edit"
@@ -231,7 +231,7 @@ export default function AdminQSJobsPage() {
                       </tr>
                     ))}
 
-                    {qsjobs.length === 0 && (
+                    {itjobs.length === 0 && (
                       <tr>
                         <td
                           colSpan={7}
@@ -248,7 +248,7 @@ export default function AdminQSJobsPage() {
 
             {/* ✅ Mobile/Card list (sm and below) */}
             <div className="md:hidden space-y-4">
-              {qsjobs.map((item) => (
+              {itjobs.map((item) => (
                 <div
                   key={item._id}
                   className="bg-white rounded-xl border border-gray-200 shadow-sm p-4"
@@ -273,7 +273,7 @@ export default function AdminQSJobsPage() {
                       <button
                         type="button"
                         onClick={() =>
-                          navigate("/admin/edit-qsjob", { state: item })
+                          navigate("/admin/edit-itjob", { state: item })
                         }
                         className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
                         title="Edit"
@@ -308,14 +308,14 @@ export default function AdminQSJobsPage() {
                     <div>
                       <p className="text-xs text-gray-500">Category</p>
                       <p className="text-sm text-gray-800">
-                        {item.jobCategory}
+                        {item.itSolutionType}
                       </p>
                     </div>
 
                     <div>
                       <p className="text-xs text-gray-500">Description</p>
                       <p className="text-sm text-gray-800">
-                        {truncate(item.message, 120)}
+                        {truncate(item.jobDescription, 120)}
                       </p>
 
                       <button
@@ -331,7 +331,7 @@ export default function AdminQSJobsPage() {
                 </div>
               ))}
 
-              {qsjobs.length === 0 && (
+              {itjobs.length === 0 && (
                 <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-600">
                   No jobs found.
                 </div>
@@ -357,7 +357,7 @@ export default function AdminQSJobsPage() {
                   Job Description
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  {viewItem.name} • {viewItem.jobCategory}
+                  {viewItem.name} • {viewItem.itSolutionType}
                 </p>
               </div>
               <button
@@ -370,7 +370,7 @@ export default function AdminQSJobsPage() {
 
             <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
               <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-                {viewItem.message}
+                {viewItem.jobDescription}
               </p>
             </div>
           </div>
