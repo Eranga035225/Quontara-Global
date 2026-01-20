@@ -141,7 +141,7 @@ export default function JobPostSection() {
 
         <motion.button
           type="submit"
-          className="w-max flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full"
+          className="w-full sm:w-max flex justify-center  items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full"
           initial={{ y: 150, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}

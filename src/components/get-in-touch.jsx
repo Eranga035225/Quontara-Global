@@ -42,7 +42,10 @@ export default function GetInTouch() {
   }
 
   return (
-    <section className="flex flex-col items-center -mt-20" id="contact">
+    <section
+      className="flex flex-col items-center -mt-10 sm:-mt-20 px-4 sm:px-6"
+      id="contact"
+    >
       <SectionTitle
         title="Get in touch"
         description="A visual collection of our most recent works - each piece crafted with intention, emotion, and style."
@@ -50,13 +53,14 @@ export default function GetInTouch() {
 
       <form
         onSubmit={sendMessage}
-        className="grid sm:grid-cols-2 gap-3 sm:gap-5 max-w-3xl mx-auto text-slate-400 mt-16 w-full"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 max-w-3xl mx-auto text-slate-400 mt-10 sm:mt-16 w-full"
       >
         <motion.div
           initial={{ y: 150, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
+          className="w-full"
         >
           <label className="font-medium text-slate-200">Your name</label>
           <input
@@ -73,6 +77,7 @@ export default function GetInTouch() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 280, damping: 70, mass: 1 }}
+          className="w-full"
         >
           <label className="font-medium text-slate-200">Email</label>
           <input
@@ -85,7 +90,7 @@ export default function GetInTouch() {
         </motion.div>
 
         <motion.div
-          className="sm:col-span-2"
+          className="sm:col-span-2 w-full"
           initial={{ y: 150, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -93,7 +98,7 @@ export default function GetInTouch() {
         >
           <label className="font-medium text-slate-200">Message</label>
           <textarea
-            rows={8}
+            rows={6}
             value={message}
             placeholder="Enter your message"
             className="resize-none w-full mt-2 p-3 outline-none border border-slate-700 rounded-lg focus:ring-1 focus:ring-indigo-600 transition"
@@ -104,19 +109,19 @@ export default function GetInTouch() {
         <motion.button
           type="submit"
           disabled={isSubmitting}
-          className={`w-max flex items-center gap-2 px-8 py-3 rounded-full text-white
-            ${
-              isSubmitting
-                ? "bg-indigo-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
+          className={`w-full sm:w-max flex items-center justify-center gap-2 px-8 py-3 rounded-full text-white
+          ${
+            isSubmitting
+              ? "bg-indigo-400 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700"
+          }`}
           initial={{ y: 150, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 280, damping: 70, mass: 1 }}
         >
           {isSubmitting ? "Sending..." : "Send Message"}
-          <ArrowUpRight className="size-4.5" />
+          <ArrowUpRight className="size-5" />
         </motion.button>
       </form>
     </section>
