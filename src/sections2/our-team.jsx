@@ -26,14 +26,23 @@ export default function OurTeam() {
       },
     },
     {
-      name: "Kavindu",
-      role: "AI / ML Engineer",
-      bio: "Data-driven products, ML pipelines, predictive analytics, and automation tools that deliver measurable value.",
-      image:
-        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60",
+      name: "Shanuka Illangasinghe",
+      role: "Software Engineer",
+      bio: "Bachelor of Computing (Hons) in Software Engineering | Full-Stack Developer | Mobile Application Developer",
+      image: "/assets/itteam/shanu.JPG",
       links: {
-        github: "#",
-        linkedin: "#",
+        github: "https://github.com/shanuDil2001",
+        linkedin: "https://www.linkedin.com/in/shanuka-ilangasinghe-ba9926393/",
+      },
+    },
+    {
+      name: "Isivara Mahaushada",
+      role: "Software Engineer",
+      bio: "Bachelor of Computing (Hons) in Software Engineering | Full-Stack Developer | Mobile Application Developer",
+      image: "/assets/itteam/isi.JPG",
+      links: {
+        github: "https://github.com/shanuDil2001",
+        linkedin: "https://www.linkedin.com/in/shanuka-ilangasinghe-ba9926393/",
       },
     },
   ];
@@ -45,7 +54,7 @@ export default function OurTeam() {
         description="A multidisciplinary team delivering engineering, web, AI, and design solutions with clarity and precision."
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-18 max-w-6xl mx-auto  ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-18 max-w-6xl mx-auto  ">
         {team.map((member, index) => (
           <motion.div
             key={member.name}
