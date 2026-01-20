@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import JobCategorySelect from "../../components/JobCategorySelect";
 
 export default function AddQSJobPage() {
   const [name, setName] = useState("");
@@ -46,7 +47,7 @@ export default function AddQSJobPage() {
     "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 px-4 py-10">
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 px-4 py-1">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-10">
         {/* Header */}
         <div className="mb-8">
@@ -99,13 +100,7 @@ export default function AddQSJobPage() {
             <label className="text-sm font-semibold text-gray-700">
               Job Category
             </label>
-            <input
-              type="text"
-              placeholder="BOQ / Takeoff, Cost Estimation, etc."
-              className={inputClass}
-              value={jobCategory}
-              onChange={(e) => setJobCategory(e.target.value)}
-            />
+            <JobCategorySelect value={jobCategory} onChange={setJobCategory} />
           </div>
 
           <div className="flex flex-col gap-2">
