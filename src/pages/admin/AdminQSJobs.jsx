@@ -6,24 +6,6 @@ import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { sampleJobsQS } from "../../assets/sampleData";
 
-function Badge({ status }) {
-  const s = (status || "pending").toLowerCase();
-  const map = {
-    pending: "bg-yellow-50 text-yellow-700 border-yellow-200",
-    approved: "bg-green-50 text-green-700 border-green-200",
-    rejected: "bg-red-50 text-red-700 border-red-200",
-  };
-  return (
-    <span
-      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
-        map[s] || "bg-gray-50 text-gray-700 border-gray-200"
-      }`}
-    >
-      {s}
-    </span>
-  );
-}
-
 function truncate(str, n = 60) {
   if (!str) return "";
   return str.length > n ? str.slice(0, n) + "…" : str;
