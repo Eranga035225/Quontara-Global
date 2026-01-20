@@ -6,6 +6,7 @@ import Loading from "../components/loading";
 import AdminQSJobsPage from "./admin/AdminQSJobs";
 import AdminITJobsPage from "./admin/AdminITJobs";
 import AddQSJobPage from "./admin/AddQSJobs";
+import AddITJobPage from "./admin/AddITJobs";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -121,6 +122,7 @@ export default function AdminPage() {
 
           {/* Placeholder routes */}
           <Route path="/it-jobs" element={<AdminITJobsPage />} />
+          <Route path="/add-itjob" element={<AddITJobPage />} />
           <Route
             path="/reviews"
             element={
