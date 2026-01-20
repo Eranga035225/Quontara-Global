@@ -1,7 +1,6 @@
-// src/pages/admin/AdminQSJobs.jsx
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { sampleJobsQS } from "../../assets/sampleData";
@@ -24,10 +23,7 @@ export default function AdminQSJobsPage() {
   const [showView, setShowView] = useState(false);
   const [viewItem, setViewItem] = useState(null);
 
-  const navigate = useNavigate();
-
   const backendBase = useMemo(() => {
-    // ensures correct slash handling
     const base = import.meta.env.VITE_BACKEND_URL || "";
     return base.endsWith("/") ? base.slice(0, -1) : base;
   }, []);
