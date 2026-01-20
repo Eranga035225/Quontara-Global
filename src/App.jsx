@@ -1,10 +1,8 @@
 import LenisScroll from "./components/lenis-scroll";
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
 import PublicLayout from "./layouts/PublicLayout";
 import AdminLayout from "./layouts/AdminLayout";
-
 import QsHome from "./pages/QsHome";
 import ContactUs from "./pages/ContactUs";
 import ITServicesPage from "./pages/it_services_page";
@@ -19,7 +17,7 @@ export default function Page() {
       <Toaster position="top-right" />
 
       <Routes>
-        {/* 🌐 Public routes (WITH navbar & footer) */}
+        {/*Public routes (WITH navbar & footer) */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<QsHome />} />
           <Route path="/contact" element={<ContactUs />} />
@@ -28,7 +26,7 @@ export default function Page() {
           <Route path="/admin/login" element={<LoginPage />} />
         </Route>
 
-        {/* 🔐 Admin routes (NO navbar & footer) */}
+        {/*Admin routes (NO navbar & footer) */}
         <Route element={<AdminLayout />}>
           <Route path="/admin/*" element={<AdminPage />} />
         </Route>

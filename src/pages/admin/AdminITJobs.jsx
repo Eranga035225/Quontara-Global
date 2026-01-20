@@ -156,6 +156,9 @@ export default function AdminITJobsPage() {
                       <th className="py-3 px-4 text-left font-semibold">
                         Description
                       </th>
+                      <th className="py-3 px-4 text-left font-semibold">
+                        Status
+                      </th>
                       <th className="py-3 px-4 text-center font-semibold w-[160px]">
                         Actions
                       </th>
@@ -203,6 +206,23 @@ export default function AdminITJobsPage() {
                               <span className="text-xs">View</span>
                             </button>
                           </div>
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold capitalize
+      ${
+        item.status === "pending"
+          ? "bg-yellow-100 text-yellow-800"
+          : item.status === "done"
+            ? "bg-green-100 text-green-800"
+            : item.status === "overdue"
+              ? "bg-red-100 text-red-800"
+              : "bg-gray-100 text-gray-800"
+      }
+    `}
+                          >
+                            {item.status}
+                          </span>
                         </td>
 
                         <td className="py-3 px-4">
