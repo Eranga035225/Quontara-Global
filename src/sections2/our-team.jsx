@@ -38,11 +38,12 @@ export default function OurTeam() {
     {
       name: "Isivara Mahaushada",
       role: "Software Engineer",
-      bio: "Bachelor of Computing (Hons) in Software Engineering | Full-Stack Developer | Mobile Application Developer",
+      bio: "Bachelor of Computing (Hons) in Software Engineering. Full-stack web developer and Flutter mobile app developer, with a strong passion for building modern, responsive applications.",
       image: "/assets/itteam/isi.JPG",
       links: {
-        github: "https://github.com/shanuDil2001",
-        linkedin: "https://www.linkedin.com/in/shanuka-ilangasinghe-ba9926393/",
+        github: "https://github.com/Isivara2021",
+        linkedin:
+          "https://www.linkedin.com/in/isivara-rajapakse-2b5278312?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
       },
     },
   ];

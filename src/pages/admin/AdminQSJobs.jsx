@@ -1,28 +1,9 @@
-// src/pages/admin/AdminQSJobs.jsx
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { sampleJobsQS } from "../../assets/sampleData";
-
-function Badge({ status }) {
-  const s = (status || "pending").toLowerCase();
-  const map = {
-    pending: "bg-yellow-50 text-yellow-700 border-yellow-200",
-    approved: "bg-green-50 text-green-700 border-green-200",
-    rejected: "bg-red-50 text-red-700 border-red-200",
-  };
-  return (
-    <span
-      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
-        map[s] || "bg-gray-50 text-gray-700 border-gray-200"
-      }`}
-    >
-      {s}
-    </span>
-  );
-}
 
 function truncate(str, n = 60) {
   if (!str) return "";
@@ -35,14 +16,14 @@ export default function AdminQSJobsPage() {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteJobId, setDeleteJobId] = useState(null);
+  const [updateJobId, setUpdateJobId] = useState(null);
+  const [showUpdateConfirm, setShowUpdateConfirm] = useState(false);
+  const [newStatus, setNewStatus] = useState("pending");
 
   const [showView, setShowView] = useState(false);
   const [viewItem, setViewItem] = useState(null);
 
-  const navigate = useNavigate();
-
   const backendBase = useMemo(() => {
-    // ensures correct slash handling
     const base = import.meta.env.VITE_BACKEND_URL || "";
     return base.endsWith("/") ? base.slice(0, -1) : base;
   }, []);
@@ -73,6 +54,20 @@ export default function AdminQSJobsPage() {
     setDeleteJobId(null);
   }
 
+  function openUpdateModal(jobId) {
+    setUpdateJobId(jobId);
+
+    const job = qsjobs.find((j) => j._id === jobId);
+    setNewStatus(job?.status || "pending");
+
+    setShowUpdateConfirm(true);
+  }
+
+  function closeUpdateModal() {
+    setShowUpdateConfirm(false);
+    setUpdateJobId(null);
+  }
+
   function openViewModal(item) {
     setViewItem(item);
     setShowView(true);
@@ -97,6 +92,31 @@ export default function AdminQSJobsPage() {
       .then(() => {
         toast.success("Deleted successfully");
         closeDeleteModal();
+        setIsLoading(true);
+      })
+      .catch((e) => {
+        toast.error(e?.response?.data?.message || "Something went wrong");
+      });
+  }
+
+  function updateStatus(jobId, newStatus) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login first");
+      return;
+    }
+
+    axios
+      .put(
+        `${backendBase}/api/qs-jobs/${jobId}`,
+        { status: newStatus },
+        {
+          headers: { Authorization: "Bearer " + token },
+        },
+      )
+      .then(() => {
+        toast.success("Status updated successfully");
+        closeUpdateModal();
         setIsLoading(true);
       })
       .catch((e) => {
@@ -156,6 +176,9 @@ export default function AdminQSJobsPage() {
                       <th className="py-3 px-4 text-left font-semibold">
                         Description
                       </th>
+                      <th className="py-3 px-4 text-left font-semibold">
+                        Status
+                      </th>
                       <th className="py-3 px-4 text-center font-semibold w-[160px]">
                         Actions
                       </th>
@@ -204,6 +227,23 @@ export default function AdminQSJobsPage() {
                             </button>
                           </div>
                         </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold capitalize
+      ${
+        item.status === "pending"
+          ? "bg-yellow-100 text-yellow-800"
+          : item.status === "done"
+            ? "bg-green-100 text-green-800"
+            : item.status === "overdue"
+              ? "bg-red-100 text-red-800"
+              : "bg-gray-100 text-gray-800"
+      }
+    `}
+                          >
+                            {item.status}
+                          </span>
+                        </td>
 
                         <td className="py-3 px-4">
                           <div className="flex justify-center items-center gap-3">
@@ -218,9 +258,7 @@ export default function AdminQSJobsPage() {
 
                             <button
                               type="button"
-                              onClick={() =>
-                                navigate("/admin/edit-qsjob", { state: item })
-                              }
+                              onClick={() => openUpdateModal(item._id)}
                               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
                               title="Edit"
                             >
@@ -272,9 +310,7 @@ export default function AdminQSJobsPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() =>
-                          navigate("/admin/edit-qsjob", { state: item })
-                        }
+                        onClick={() => openUpdateModal(item._id)}
                         className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
                         title="Edit"
                       >
@@ -344,7 +380,7 @@ export default function AdminQSJobsPage() {
       {/* View Modal */}
       {showView && viewItem && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40"
           onClick={closeViewModal}
         >
           <div
@@ -380,7 +416,7 @@ export default function AdminQSJobsPage() {
       {/* Delete Confirm Modal */}
       {showDeleteConfirm && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40"
           onClick={closeDeleteModal}
         >
           <div
@@ -407,6 +443,76 @@ export default function AdminQSJobsPage() {
                 className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
               >
                 Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Update Status Modal */}
+      {showUpdateConfirm && updateJobId && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50"
+          onClick={closeUpdateModal}
+        >
+          <div
+            className="bg-white rounded-lg shadow-lg w-[360px] p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">
+              Update Status
+            </h2>
+            <p className="text-sm text-gray-600 mb-5">
+              Choose a new status for this job.
+            </p>
+
+            <label className="text-sm font-semibold text-gray-700">
+              Status
+            </label>
+
+            <select
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+              className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+              <option value="pending">Pending</option>
+              <option value="done">Done</option>
+              <option value="overdue">Overdue</option>
+            </select>
+
+            {/* Live badge preview */}
+            <div className="mt-4">
+              <span
+                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold capitalize
+            ${
+              newStatus === "pending"
+                ? "bg-yellow-100 text-yellow-800"
+                : newStatus === "done"
+                  ? "bg-green-100 text-green-800"
+                  : newStatus === "overdue"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-gray-100 text-gray-800"
+            }
+          `}
+              >
+                {newStatus}
+              </span>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={closeUpdateModal}
+                className="px-4 py-2 rounded-md border text-gray-700 hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => updateStatus(updateJobId, newStatus)}
+                className="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition"
+              >
+                Update
               </button>
             </div>
           </div>
