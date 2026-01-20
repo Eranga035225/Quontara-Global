@@ -99,11 +99,16 @@ export default function HeroSection() {
           className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition text-white active:scale-95 rounded-lg px-7 h-11"
           onClick={handleClick}
         >
-          Get started
+          Explore Our QS Services
           <ArrowRight className="size-5" />
         </button>
-        <button className="border border-slate-400 active:scale-95 hover:bg-white/10 transition rounded-lg px-8 h-11">
-          Book a demo
+        <button
+          className="border border-slate-400 active:scale-95 hover:bg-white/10 transition rounded-lg px-8 h-11"
+          onClick={() => {
+            navigate("/contact");
+          }}
+        >
+          Talk to our experts
         </button>
       </motion.div>
     </section>
