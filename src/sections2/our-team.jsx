@@ -5,46 +5,44 @@ import { Linkedin, Github, Mail } from "lucide-react";
 export default function OurTeam() {
   const team = [
     {
-      name: "Deemantha",
-      role: "Quantity Surveyor & Cost Consultant",
-      bio: "Cost estimation, BOQs, tender support, and project cost control with practical construction insight.",
-      image:
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
+      name: "Vishishta Dilsara",
+      role: "Software Engineer",
+      bio: "Bachelor of Computing (Hons) in Software Engineering. Full-stack developer and cloud engineer with DevOps expertise, Aviatrix and FinOps certified, focused on scalable and cost-efficient systems.",
+      image: "/assets/itteam/vishnew2.JPG",
       links: {
-        linkedin: "#",
-        email: "mailto:hello@example.com",
+        github: "https://github.com/VishishtaDilsara",
+        linkedin: "https://www.linkedin.com/in/vishishta-dilsara-14059a348/",
       },
     },
     {
-      name: "Madhavi",
-      role: "Full-Stack Web Developer",
-      bio: "Modern web apps with React/Next.js, API integrations, dashboards, and scalable backend systems.",
-      image:
-        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+      name: "Eranga Kavisanka",
+      role: "Software Engineer",
+      bio: "Bachelor of Computing (Hons) in Software Engineering. Full-stack developer, DevOps and Cloud engineer, Flutter Developer and Python ML expertise, Aviatrix certified Engineer",
+      image: "/assets/itteam/Eranew.JPG",
       links: {
-        github: "#",
-        linkedin: "#",
+        github: "https://github.com/Eranga035225",
+        linkedin:
+          "https://www.linkedin.com/in/eranga-kavisanka-ariyarathna-7249592a8/",
       },
     },
     {
-      name: "Kavindu",
-      role: "AI / ML Engineer",
-      bio: "Data-driven products, ML pipelines, predictive analytics, and automation tools that deliver measurable value.",
-      image:
-        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60",
+      name: "Shanuka Illangasinghe",
+      role: "Software Engineer",
+      bio: "Bachelor of Computing (Hons) in Software Engineering | Full-Stack Developer | Mobile Application Developer",
+      image: "/assets/itteam/shanu.JPG",
       links: {
-        github: "#",
-        linkedin: "#",
+        github: "https://github.com/shanuDil2001",
+        linkedin: "https://www.linkedin.com/in/shanuka-ilangasinghe-ba9926393/",
       },
     },
     {
-      name: "Ayesha",
-      role: "Graphic & UI/UX Designer",
-      bio: "Brand identity, UI/UX, marketing assets, and clean design systems built for conversion and clarity.",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200",
+      name: "Isivara Mahaushada",
+      role: "Software Engineer",
+      bio: "Bachelor of Computing (Hons) in Software Engineering | Full-Stack Developer | Mobile Application Developer",
+      image: "/assets/itteam/isi.JPG",
       links: {
-        linkedin: "#",
+        github: "https://github.com/shanuDil2001",
+        linkedin: "https://www.linkedin.com/in/shanuka-ilangasinghe-ba9926393/",
       },
     },
   ];
@@ -56,7 +54,7 @@ export default function OurTeam() {
         description="A multidisciplinary team delivering engineering, web, AI, and design solutions with clarity and precision."
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-18 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-18 max-w-6xl mx-auto  ">
         {team.map((member, index) => (
           <motion.div
             key={member.name}

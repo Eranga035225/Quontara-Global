@@ -116,7 +116,7 @@ export default function AdminQSJobsPage() {
         </div>
 
         <Link
-          to="/admin/add-product"
+          to="/admin/add-qsjob"
           className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
         >
           <span className="text-lg leading-none">+</span>
