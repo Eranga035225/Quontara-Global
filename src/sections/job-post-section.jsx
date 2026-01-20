@@ -35,9 +35,7 @@ export default function JobPostSection() {
           ...payload,
         },
       );
-      toast.success(
-        response?.data?.message || "Job post submitted successfully!",
-      );
+      toast.success("Job post submitted successfully!");
       setIsSubmitting(false);
       setEmail("");
       setName("");
