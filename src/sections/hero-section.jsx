@@ -1,8 +1,17 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import TiltedImage from "../components/tilt-image";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/");
+
+    setTimeout(() => {
+      const el = document.getElementById("contact");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  };
   return (
     <section className="flex flex-col items-center -mt-18">
       <motion.svg
@@ -86,7 +95,10 @@ export default function HeroSection() {
         viewport={{ once: true }}
         transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
       >
-        <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition text-white active:scale-95 rounded-lg px-7 h-11">
+        <button
+          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition text-white active:scale-95 rounded-lg px-7 h-11"
+          onClick={handleClick}
+        >
           Get started
           <ArrowRight className="size-5" />
         </button>
