@@ -127,8 +127,8 @@ export default function AddQSJobPage() {
 
           <button
             onClick={AddQSJob}
-            className="px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold
-                       hover:bg-blue-700 shadow-md transition active:scale-95"
+            className="px-6 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 transition text-white text-sm font-semibold
+                        shadow-md active:scale-95"
           >
             Add QS Job
           </button>
