@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import JobCategorySelect from "../../components/JobCategorySelect";
+import JobCategorySelect from "../../components2/JobCategorySelect";
 
 export default function AddITJobPage() {
   const [name, setName] = useState("");
