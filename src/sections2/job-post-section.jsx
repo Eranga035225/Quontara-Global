@@ -2,9 +2,9 @@ import SectionTitle from "../components/section-title";
 import { ArrowUpRight, SendIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import JobCategorySelect from "../components/JobCategorySelect";
 import toast from "react-hot-toast";
 import axios from "axios";
+import JobCategorySelect from "../components2/JobCategorySelect";
 
 export default function JobPostSection() {
   const [category, setCategory] = useState("");

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { sampleJobsIT } from "../../assets/sampleData";
+import { ITDOMAINS } from "../../components2/JobCategorySelect";
 
 function truncate(str, n = 60) {
   if (!str) return "";
@@ -45,6 +46,22 @@ export default function AdminITJobsPage() {
         setIsLoading(false);
       });
   }, [isLoading, backendBase]);
+
+  const categoryLabelMap = useMemo(() => {
+    const map = new Map();
+
+    for (const d of ITDOMAINS) {
+      for (const s of d.subtopics) {
+        map.set(s.value, `${s.label}`);
+      }
+    }
+
+    return map;
+  }, [ITDOMAINS]);
+
+  function getCategoryLabel(value) {
+    return categoryLabelMap.get(value) || value || "-";
+  }
 
   function openDeleteModal(jobId) {
     setDeleteJobId(jobId);
@@ -126,6 +143,93 @@ export default function AdminITJobsPage() {
       });
   }
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  function escapeCsv(value) {
+    if (value === null || value === undefined) return "";
+    const str = String(value);
+    // Wrap in quotes if it contains comma, quote, or newline
+    if (/[,"\n]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
+    return str;
+  }
+
+  function downloadITJobsCSV() {
+    if (!Array.isArray(itjobs) || itjobs.length === 0) {
+      toast.error("No jobs to export");
+      return;
+    }
+
+    const headers = [
+      "Job ID",
+      "Name",
+      "Email",
+      "Whatsapp",
+      "Category",
+      "Description",
+      "Date",
+      "Time",
+      "Status",
+    ];
+
+    const rows = itjobs.map((item) => [
+      item.itJobId,
+      item.name,
+      item.email,
+      item.whatsappNumber,
+      getCategoryLabel(item.itSolutionType),
+      item.jobDescription,
+      formatDate(item.date),
+      formatTime(item.date),
+      item.status,
+    ]);
+
+    const csv =
+      "\uFEFF" + // Excel UTF-8 BOM
+      [headers, ...rows].map((row) => row.map(escapeCsv).join(",")).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+
+    const now = new Date();
+
+    const date = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    const time = now
+      .toTimeString()
+      .slice(0, 8) // HH:MM:SS
+      .replace(/:/g, "-"); // HH-MM-SS
+
+    a.download = `it-jobs-${date}_${time}.csv`;
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    toast.success("CSV downloaded");
+  }
+
   return (
     <div className="w-full h-full flex flex-col bg-gray-100 rounded-xl border border-gray-200">
       {/* Header */}
@@ -137,13 +241,23 @@ export default function AdminITJobsPage() {
           </p>
         </div>
 
-        <Link
-          to="/admin/add-itjob"
-          className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
-        >
-          <span className="text-lg leading-none">+</span>
-          <span>Add</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={downloadITJobsCSV}
+            className="hidden sm:inline-flex items-center gap-2 bg-white text-gray-900 font-semibold py-2.5 px-5 rounded-full border border-gray-300 shadow-sm hover:bg-gray-50 transition"
+          >
+            Download CSV
+          </button>
+
+          <Link
+            to="/admin/add-itjob"
+            className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
+          >
+            <span className="text-lg leading-none">+</span>
+            <span>Add</span>
+          </Link>
+        </div>
       </div>
 
       {/* Content */}
@@ -172,12 +286,16 @@ export default function AdminITJobsPage() {
                       <th className="py-3 px-4 text-left font-semibold w-[180px]">
                         Whatsapp
                       </th>
-                      <th className="py-3 px-4 text-left font-semibold w-[220px]">
+                      <th className="py-3 px-4 text-left font-semibold w-[240px] whitespace-nowrap">
                         Category
                       </th>
                       <th className="py-3 px-4 text-left font-semibold">
                         Description
                       </th>
+                      <th className="py-3 px-4 text-left font-semibold w-[220px] whitespace-nowrap">
+                        Date & Time
+                      </th>
+
                       <th className="py-3 px-4 text-left font-semibold">
                         Status
                       </th>
@@ -209,8 +327,8 @@ export default function AdminITJobsPage() {
                           {item.whatsappNumber}
                         </td>
 
-                        <td className="py-3 px-4 text-gray-700">
-                          {item.itSolutionType}
+                        <td className="py-3 px-4 text-gray-700 whitespace-nowrap">
+                          {getCategoryLabel(item.itSolutionType)}
                         </td>
 
                         <td className="py-3 px-4 text-gray-700">
@@ -229,6 +347,17 @@ export default function AdminITJobsPage() {
                             </button>
                           </div>
                         </td>
+                        <td className="py-3 px-4 text-gray-700 whitespace-nowrap">
+                          <div className="flex flex-col leading-tight">
+                            <span className="font-medium">
+                              {formatDate(item.date)}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {formatTime(item.date)}
+                            </span>
+                          </div>
+                        </td>
+
                         <td className="py-3 px-4">
                           <span
                             className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold capitalize
@@ -349,7 +478,7 @@ export default function AdminITJobsPage() {
                     <div>
                       <p className="text-xs text-gray-500">Category</p>
                       <p className="text-sm text-gray-800">
-                        {item.itSolutionType}
+                        {getCategoryLabel(item.itSolutionType)}
                       </p>
                     </div>
 
@@ -367,6 +496,15 @@ export default function AdminITJobsPage() {
                         <FaEye />
                         View full
                       </button>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Date & Time</p>
+                      <p className="text-sm text-gray-800 leading-tight">
+                        {formatDate(item.date)}{" "}
+                        <span className="text-xs text-gray-500">
+                          {formatTime(item.date)}
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -398,7 +536,7 @@ export default function AdminITJobsPage() {
                   Job Description
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  {viewItem.name} • {viewItem.itSolutionType}
+                  {viewItem.name} • {getCategoryLabel(viewItem.itSolutionType)}
                 </p>
               </div>
               <button

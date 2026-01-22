@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { sampleJobsQS } from "../../assets/sampleData";
+import { QSDOMAINS } from "../../components/JobCategorySelect";
 
 function truncate(str, n = 60) {
   if (!str) return "";
@@ -43,6 +44,22 @@ export default function AdminQSJobsPage() {
         setIsLoading(false);
       });
   }, [isLoading, backendBase]);
+
+  const categoryLabelMap = useMemo(() => {
+    const map = new Map();
+
+    for (const d of QSDOMAINS) {
+      for (const s of d.subtopics) {
+        map.set(s.value, `${s.label}`);
+      }
+    }
+
+    return map;
+  }, [QSDOMAINS]);
+
+  function getCategoryLabel(value) {
+    return categoryLabelMap.get(value) || value || "-";
+  }
 
   function openDeleteModal(jobId) {
     setDeleteJobId(jobId);
@@ -124,6 +141,93 @@ export default function AdminQSJobsPage() {
       });
   }
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  function escapeCsv(value) {
+    if (value === null || value === undefined) return "";
+    const str = String(value);
+    // Wrap in quotes if it contains comma, quote, or newline
+    if (/[,"\n]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
+    return str;
+  }
+
+  function downloadQSJobsCSV() {
+    if (!Array.isArray(qsjobs) || qsjobs.length === 0) {
+      toast.error("No jobs to export");
+      return;
+    }
+
+    const headers = [
+      "Job ID",
+      "Name",
+      "Email",
+      "Whatsapp",
+      "Category",
+      "Description",
+      "Date",
+      "Time",
+      "Status",
+    ];
+
+    const rows = qsjobs.map((item) => [
+      item.qsJobId,
+      item.name,
+      item.email,
+      item.whatsappNumber,
+      getCategoryLabel(item.jobCategory),
+      item.message,
+      formatDate(item.date),
+      formatTime(item.date),
+      item.status,
+    ]);
+
+    const csv =
+      "\uFEFF" + // Excel UTF-8 BOM
+      [headers, ...rows].map((row) => row.map(escapeCsv).join(",")).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+
+    const now = new Date();
+
+    const date = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    const time = now
+      .toTimeString()
+      .slice(0, 8) // HH:MM:SS
+      .replace(/:/g, "-"); // HH-MM-SS
+
+    a.download = `qs-jobs-${date}_${time}.csv`;
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    toast.success("CSV downloaded");
+  }
+
   return (
     <div className="w-full h-full flex flex-col bg-gray-100 rounded-xl border border-gray-200">
       {/* Header */}
@@ -135,13 +239,23 @@ export default function AdminQSJobsPage() {
           </p>
         </div>
 
-        <Link
-          to="/admin/add-qsjob"
-          className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
-        >
-          <span className="text-lg leading-none">+</span>
-          <span>Add</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={downloadQSJobsCSV}
+            className="hidden sm:inline-flex items-center gap-2 bg-white text-gray-900 font-semibold py-2.5 px-5 rounded-full border border-gray-300 shadow-sm hover:bg-gray-50 transition"
+          >
+            Download CSV
+          </button>
+
+          <Link
+            to="/admin/add-qsjob"
+            className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
+          >
+            <span className="text-lg leading-none">+</span>
+            <span>Add</span>
+          </Link>
+        </div>
       </div>
 
       {/* Content */}
@@ -170,11 +284,14 @@ export default function AdminQSJobsPage() {
                       <th className="py-3 px-4 text-left font-semibold w-[180px]">
                         Whatsapp
                       </th>
-                      <th className="py-3 px-4 text-left font-semibold w-[220px]">
+                      <th className="py-3 px-4 text-left font-semibold w-[240px] whitespace-nowrap">
                         Category
                       </th>
                       <th className="py-3 px-4 text-left font-semibold">
                         Description
+                      </th>
+                      <th className="py-3 px-4 text-left font-semibold w-[220px] whitespace-nowrap">
+                        Date & Time
                       </th>
                       <th className="py-3 px-4 text-left font-semibold">
                         Status
@@ -207,8 +324,8 @@ export default function AdminQSJobsPage() {
                           {item.whatsappNumber}
                         </td>
 
-                        <td className="py-3 px-4 text-gray-700">
-                          {item.jobCategory}
+                        <td className="py-3 px-4 text-gray-700 whitespace-nowrap">
+                          {getCategoryLabel(item.jobCategory)}
                         </td>
 
                         <td className="py-3 px-4 text-gray-700">
@@ -225,6 +342,16 @@ export default function AdminQSJobsPage() {
                               <FaEye />
                               <span className="text-xs">View</span>
                             </button>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-gray-700 whitespace-nowrap">
+                          <div className="flex flex-col leading-tight">
+                            <span className="font-medium">
+                              {formatDate(item.date)}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {formatTime(item.date)}
+                            </span>
                           </div>
                         </td>
                         <td className="py-3 px-4">
@@ -365,6 +492,15 @@ export default function AdminQSJobsPage() {
                         View full
                       </button>
                     </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Date & Time</p>
+                      <p className="text-sm text-gray-800 leading-tight">
+                        {formatDate(item.date)}{" "}
+                        <span className="text-xs text-gray-500">
+                          {formatTime(item.date)}
+                        </span>
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -395,7 +531,7 @@ export default function AdminQSJobsPage() {
                   Job Description
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  {viewItem.name} • {viewItem.jobCategory}
+                  {viewItem.name} • {getCategoryLabel(viewItem.jobCategory)}
                 </p>
               </div>
               <button
