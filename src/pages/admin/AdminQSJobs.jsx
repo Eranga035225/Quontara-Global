@@ -454,7 +454,7 @@ export default function AdminQSJobsPage() {
                   Job Description
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  {viewItem.name} • {viewItem.jobCategory}
+                  {viewItem.name} • {getCategoryLabel(viewItem.jobCategory)}
                 </p>
               </div>
               <button
