@@ -2,73 +2,79 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { ChevronDown, Check, ArrowLeft } from "lucide-react";
 
-export const QSDOMAINS = [
+export const ITDOMAINS = [
   {
-    value: "measurement-boq",
-    label: "Measurement & BOQ",
+    value: "web-development",
+    label: "Web Development",
     subtopics: [
       {
-        value: "boq-preparation",
-        label: "BOQ Preparation (Buildings / Roads / MEP)",
+        value: "frontend-development",
+        label: "Frontend Development (React / Vue / Angular)",
       },
       {
-        value: "quantity-takeoff",
-        label: "Quantity Take-off from Drawings (PDF / CAD)",
+        value: "backend-development",
+        label: "Backend Development (Node / Django / Spring)",
       },
-      {
-        value: "takeoffs-tools",
-        label: "PlanSwift / CostX / Bluebeam Take-offs",
-      },
-      {
-        value: "remeasurement-variations",
-        label: "Re-measurement for Variations",
-      },
-      { value: "subcontractor-boq", label: "Sub-contractor BOQ Preparation" },
+      { value: "fullstack-development", label: "Full-Stack Web Development" },
+      { value: "api-development", label: "REST / GraphQL API Development" },
+      { value: "bug-fixing", label: "Bug Fixing & Performance Optimization" },
+      { value: "website-maintenance", label: "Website Maintenance & Support" },
     ],
   },
+
   {
-    value: "estimation-tendering",
-    label: "Estimation & Tendering",
+    value: "ai-ml-dl",
+    label: "AI / ML / Deep Learning",
     subtopics: [
       {
-        value: "cost-estimation",
-        label: "Cost Estimation (Pre-tender & Post-tender)",
+        value: "machine-learning-models",
+        label: "Machine Learning Model Development",
       },
-      { value: "tender-docs", label: "Tender Document Preparation" },
-      { value: "bid-pricing", label: "Bid Pricing & Rate Analysis" },
-      { value: "value-engineering", label: "Value Engineering Cost Studies" },
-      { value: "tender-support", label: "Contractor Tender Support" },
+      {
+        value: "deep-learning-models",
+        label: "Deep Learning (CNN / RNN / Transformers)",
+      },
+      { value: "nlp-solutions", label: "Natural Language Processing (NLP)" },
+      { value: "computer-vision", label: "Computer Vision Solutions" },
+      { value: "ai-integration", label: "AI Model Integration & Deployment" },
+      {
+        value: "data-preprocessing",
+        label: "Data Cleaning & Feature Engineering",
+      },
     ],
   },
+
   {
-    value: "contracts-claims",
-    label: "Contracts, Variations & Claims",
+    value: "assignments",
+    label: "Assignments & Academic Support",
     subtopics: [
       {
-        value: "variation-valuation",
-        label: "Variation Valuation & Assessment",
+        value: "programming-assignments",
+        label: "Programming Assignments (Any Language)",
       },
-      { value: "ipa", label: "Interim Payment Application (IPA)" },
-      { value: "final-account", label: "Final Account Preparation" },
-      { value: "eot-claims", label: "EOT & Claims Support" },
-      { value: "fidic-ictad", label: "FIDIC / ICTAD Contract Advice" },
+      {
+        value: "data-science-assignments",
+        label: "Data Science / ML Assignments",
+      },
+      { value: "web-dev-assignments", label: "Web Development Assignments" },
+      { value: "project-reports", label: "Final Year Projects & Reports" },
+      { value: "debugging-help", label: "Code Debugging & Explanation" },
     ],
   },
+
   {
-    value: "commercial-support",
-    label: "Commercial & Project Support",
+    value: "devops-cloud",
+    label: "DevOps & Cloud Solutions",
     subtopics: [
-      { value: "cost-control", label: "Cost Control & Cash Flow Forecasting" },
-      { value: "resource-budgeting", label: "Resource Budgeting" },
-      { value: "monthly-reports", label: "Monthly Cost Reports" },
+      { value: "cloud-deployment", label: "AWS / Azure / GCP Deployment" },
+      { value: "ci-cd-pipelines", label: "CI/CD Pipeline Setup" },
+      { value: "docker-kubernetes", label: "Docker & Kubernetes" },
+      { value: "server-setup", label: "Linux Server Setup & Hardening" },
       {
-        value: "commercial-support-remote",
-        label: "Project Commercial Support (Remote)",
+        value: "monitoring-logging",
+        label: "Monitoring & Logging (Prometheus / Grafana)",
       },
-      {
-        value: "project-coordination",
-        label: "Construction Project Coordination",
-      },
+      { value: "cloud-cost-optimization", label: "Cloud Cost Optimization" },
     ],
   },
 ];
@@ -82,7 +88,7 @@ export default function JobCategorySelect({ value, onChange }) {
   // Flatten all subtopics so we can display the selected label in the button
   const subtopicIndex = useMemo(() => {
     const map = new Map();
-    for (const d of QSDOMAINS) {
+    for (const d of ITDOMAINS) {
       for (const s of d.subtopics) {
         map.set(s.value, { ...s, domain: d });
       }
@@ -142,7 +148,7 @@ export default function JobCategorySelect({ value, onChange }) {
                 {/* Step 1: Domains */}
                 {!activeDomain ? (
                   <div>
-                    {QSDOMAINS.map((d) => (
+                    {ITDOMAINS.map((d) => (
                       <button
                         key={d.value}
                         type="button"
