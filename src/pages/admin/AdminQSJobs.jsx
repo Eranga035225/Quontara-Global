@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { sampleJobsQS } from "../../assets/sampleData";
+import { QSDOMAINS } from "../../components/JobCategorySelect";
 
 function truncate(str, n = 60) {
   if (!str) return "";
@@ -43,6 +44,22 @@ export default function AdminQSJobsPage() {
         setIsLoading(false);
       });
   }, [isLoading, backendBase]);
+
+  const categoryLabelMap = useMemo(() => {
+    const map = new Map();
+
+    for (const d of QSDOMAINS) {
+      for (const s of d.subtopics) {
+        map.set(s.value, `${s.label}`);
+      }
+    }
+
+    return map;
+  }, [QSDOMAINS]);
+
+  function getCategoryLabel(value) {
+    return categoryLabelMap.get(value) || value || "-";
+  }
 
   function openDeleteModal(jobId) {
     setDeleteJobId(jobId);
@@ -190,7 +207,7 @@ export default function AdminQSJobsPage() {
                       <th className="py-3 px-4 text-left font-semibold w-[180px]">
                         Whatsapp
                       </th>
-                      <th className="py-3 px-4 text-left font-semibold w-[220px]">
+                      <th className="py-3 px-4 text-left font-semibold w-[240px] whitespace-nowrap">
                         Category
                       </th>
                       <th className="py-3 px-4 text-left font-semibold">
@@ -230,8 +247,8 @@ export default function AdminQSJobsPage() {
                           {item.whatsappNumber}
                         </td>
 
-                        <td className="py-3 px-4 text-gray-700">
-                          {item.jobCategory}
+                        <td className="py-3 px-4 text-gray-700 whitespace-nowrap">
+                          {getCategoryLabel(item.jobCategory)}
                         </td>
 
                         <td className="py-3 px-4 text-gray-700">
