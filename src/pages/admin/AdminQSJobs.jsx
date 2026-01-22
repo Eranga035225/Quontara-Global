@@ -193,7 +193,7 @@ export default function AdminQSJobsPage() {
       item.email,
       item.whatsappNumber,
       getCategoryLabel(item.jobCategory),
-      item.jobDescription,
+      item.message,
       formatDate(item.date),
       formatTime(item.date),
       item.status,
