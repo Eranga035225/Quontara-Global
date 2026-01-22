@@ -5,11 +5,10 @@ import { Linkedin, Github, Mail } from "lucide-react";
 export default function OurTeam() {
   const team = [
     {
-      name: "Deemantha",
-      role: "Quantity Surveyor & Cost Consultant",
-      bio: "Cost estimation, BOQs, tender support, and project cost control with practical construction insight.",
-      image:
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
+      name: "Navindu Deshan",
+      role: "Quantity Surveyor",
+      bio: "Quantity Surveyor with an MSc in Construction Project Management and five years’ industry experience, specializing in variations, tendering, BOQ preparation, cost control, and contract administration.",
+      image: "/assets/qsteam/navindu.JPG",
       links: {
         linkedin: "#",
         email: "mailto:hello@example.com",
@@ -38,7 +37,7 @@ export default function OurTeam() {
       },
     },
     {
-      name: "Ayesha",
+      name: "Olivia",
       role: "Graphic & UI/UX Designer",
       bio: "Brand identity, UI/UX, marketing assets, and clean design systems built for conversion and clarity.",
       image:
