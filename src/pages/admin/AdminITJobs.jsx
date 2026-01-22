@@ -300,7 +300,7 @@ export default function AdminITJobsPage() {
                     <div className="min-w-0">
                       <p className="text-xs text-gray-500">Job ID</p>
                       <p className="text-sm font-mono text-gray-800 break-all">
-                        {item._id}
+                        {item.itJobId}
                       </p>
                     </div>
 
