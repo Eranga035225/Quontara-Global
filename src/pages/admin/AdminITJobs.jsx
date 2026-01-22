@@ -194,7 +194,7 @@ export default function AdminITJobsPage() {
                         className="border-b border-gray-200 hover:bg-gray-50 transition"
                       >
                         <td className="py-3 px-4 text-gray-700 font-mono">
-                          {item._id}
+                          {item.itJobId}
                         </td>
 
                         <td className="py-3 px-4 text-gray-900 font-medium">
