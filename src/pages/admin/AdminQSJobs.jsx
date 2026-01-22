@@ -161,6 +161,73 @@ export default function AdminQSJobsPage() {
     });
   }
 
+  function escapeCsv(value) {
+    if (value === null || value === undefined) return "";
+    const str = String(value);
+    // Wrap in quotes if it contains comma, quote, or newline
+    if (/[,"\n]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
+    return str;
+  }
+
+  function downloadQSJobsCSV() {
+    if (!Array.isArray(qsjobs) || qsjobs.length === 0) {
+      toast.error("No jobs to export");
+      return;
+    }
+
+    const headers = [
+      "Job ID",
+      "Name",
+      "Email",
+      "Whatsapp",
+      "Category",
+      "Description",
+      "Date",
+      "Time",
+      "Status",
+    ];
+
+    const rows = qsjobs.map((item) => [
+      item.qsJobId,
+      item.name,
+      item.email,
+      item.whatsappNumber,
+      getCategoryLabel(item.jobCategory),
+      item.jobDescription,
+      formatDate(item.date),
+      formatTime(item.date),
+      item.status,
+    ]);
+
+    const csv =
+      "\uFEFF" + // Excel UTF-8 BOM
+      [headers, ...rows].map((row) => row.map(escapeCsv).join(",")).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+
+    const now = new Date();
+
+    const date = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    const time = now
+      .toTimeString()
+      .slice(0, 8) // HH:MM:SS
+      .replace(/:/g, "-"); // HH-MM-SS
+
+    a.download = `qs-jobs-${date}_${time}.csv`;
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    toast.success("CSV downloaded");
+  }
+
   return (
     <div className="w-full h-full flex flex-col bg-gray-100 rounded-xl border border-gray-200">
       {/* Header */}
@@ -172,13 +239,23 @@ export default function AdminQSJobsPage() {
           </p>
         </div>
 
-        <Link
-          to="/admin/add-qsjob"
-          className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
-        >
-          <span className="text-lg leading-none">+</span>
-          <span>Add</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={downloadQSJobsCSV}
+            className="hidden sm:inline-flex items-center gap-2 bg-white text-gray-900 font-semibold py-2.5 px-5 rounded-full border border-gray-300 shadow-sm hover:bg-gray-50 transition"
+          >
+            Download CSV
+          </button>
+
+          <Link
+            to="/admin/add-qsjob"
+            className="hidden sm:inline-flex items-center gap-2 bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-full shadow hover:bg-gray-800 transition"
+          >
+            <span className="text-lg leading-none">+</span>
+            <span>Add</span>
+          </Link>
+        </div>
       </div>
 
       {/* Content */}
