@@ -192,7 +192,7 @@ export default function AdminQSJobsPage() {
                         className="border-b border-gray-200 hover:bg-gray-50 transition"
                       >
                         <td className="py-3 px-4 text-gray-700 font-mono">
-                          {item._id}
+                          {item.qsJobId}
                         </td>
 
                         <td className="py-3 px-4 text-gray-900 font-medium">
@@ -297,7 +297,7 @@ export default function AdminQSJobsPage() {
                     <div className="min-w-0">
                       <p className="text-xs text-gray-500">Job ID</p>
                       <p className="text-sm font-mono text-gray-800 break-all">
-                        {item._id}
+                        {item.qsJobId}
                       </p>
                     </div>
 
