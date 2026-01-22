@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { sampleJobsIT } from "../../assets/sampleData";
+import { ITDOMAINS } from "../../components2/JobCategorySelect";
 
 function truncate(str, n = 60) {
   if (!str) return "";
@@ -45,6 +46,22 @@ export default function AdminITJobsPage() {
         setIsLoading(false);
       });
   }, [isLoading, backendBase]);
+
+  const categoryLabelMap = useMemo(() => {
+    const map = new Map();
+
+    for (const d of ITDOMAINS) {
+      for (const s of d.subtopics) {
+        map.set(s.value, `${s.label}`);
+      }
+    }
+
+    return map;
+  }, [ITDOMAINS]);
+
+  function getCategoryLabel(value) {
+    return categoryLabelMap.get(value) || value || "-";
+  }
 
   function openDeleteModal(jobId) {
     setDeleteJobId(jobId);
@@ -192,7 +209,7 @@ export default function AdminITJobsPage() {
                       <th className="py-3 px-4 text-left font-semibold w-[180px]">
                         Whatsapp
                       </th>
-                      <th className="py-3 px-4 text-left font-semibold w-[220px]">
+                      <th className="py-3 px-4 text-left font-semibold w-[240px] whitespace-nowrap">
                         Category
                       </th>
                       <th className="py-3 px-4 text-left font-semibold">
@@ -233,8 +250,8 @@ export default function AdminITJobsPage() {
                           {item.whatsappNumber}
                         </td>
 
-                        <td className="py-3 px-4 text-gray-700">
-                          {item.itSolutionType}
+                        <td className="py-3 px-4 text-gray-700 whitespace-nowrap">
+                          {getCategoryLabel(item.itSolutionType)}
                         </td>
 
                         <td className="py-3 px-4 text-gray-700">
@@ -384,7 +401,7 @@ export default function AdminITJobsPage() {
                     <div>
                       <p className="text-xs text-gray-500">Category</p>
                       <p className="text-sm text-gray-800">
-                        {item.itSolutionType}
+                        {getCategoryLabel(item.itSolutionType)}
                       </p>
                     </div>
 
@@ -442,7 +459,7 @@ export default function AdminITJobsPage() {
                   Job Description
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  {viewItem.name} • {viewItem.itSolutionType}
+                  {viewItem.name} • {getCategoryLabel(viewItem.itSolutionType)}
                 </p>
               </div>
               <button
