@@ -126,6 +126,26 @@ export default function AdminITJobsPage() {
       });
   }
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
   return (
     <div className="w-full h-full flex flex-col bg-gray-100 rounded-xl border border-gray-200">
       {/* Header */}
@@ -178,6 +198,10 @@ export default function AdminITJobsPage() {
                       <th className="py-3 px-4 text-left font-semibold">
                         Description
                       </th>
+                      <th className="py-3 px-4 text-left font-semibold w-[220px] whitespace-nowrap">
+                        Date & Time
+                      </th>
+
                       <th className="py-3 px-4 text-left font-semibold">
                         Status
                       </th>
@@ -229,6 +253,17 @@ export default function AdminITJobsPage() {
                             </button>
                           </div>
                         </td>
+                        <td className="py-3 px-4 text-gray-700 whitespace-nowrap">
+                          <div className="flex flex-col leading-tight">
+                            <span className="font-medium">
+                              {formatDate(item.date)}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {formatTime(item.date)}
+                            </span>
+                          </div>
+                        </td>
+
                         <td className="py-3 px-4">
                           <span
                             className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold capitalize
@@ -367,6 +402,15 @@ export default function AdminITJobsPage() {
                         <FaEye />
                         View full
                       </button>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Date & Time</p>
+                      <p className="text-sm text-gray-800 leading-tight">
+                        {formatDate(item.date)}{" "}
+                        <span className="text-xs text-gray-500">
+                          {formatTime(item.date)}
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </div>
